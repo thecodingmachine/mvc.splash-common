@@ -1,9 +1,10 @@
 <?php
+
 namespace Mouf\Mvc\Splash;
 
-use Symfony\Component\HttpFoundation\Response;
 use Mouf\Html\HtmlElement\HtmlElementInterface;
-use Mouf\Mvc\Splash\Utils\SplashException;
+use Zend\Diactoros\Response;
+use Zend\Diactoros\Stream;
 
 /**
  * This class is a Symfony 2 response that takes in parameter a HtmlElementInterface element and will render it.
@@ -13,8 +14,8 @@ use Mouf\Mvc\Splash\Utils\SplashException;
 class HtmlResponse extends Response
 {
     /**
-	 * @var HtmlElementInterface
-	 */
+     * @var HtmlElementInterface
+     */
     protected $htmlElement;
 
     /**
@@ -24,26 +25,24 @@ class HtmlResponse extends Response
      * @param int                  $status      The response status code
      * @param array                $headers     An array of response headers
      */
-    public function __construct(HtmlElementInterface $htmlElement = null, $status = 200, $headers = array())
+    public function __construct(HtmlElementInterface $htmlElement, $status = 200, $headers = array())
     {
-        parent::__construct("", $status, $headers);
+        parent::__construct('php://temp', $status, $headers);
+
         $this->htmlElement = $htmlElement;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function create($htmlElement = '', $status = 200, $headers = array())
+    public static function create(HtmlElementInterface $htmlElement, $status = 200, $headers = array())
     {
-        if (!$htmlElement instanceof HtmlElementInterface) {
-            throw new SplashException("HtmlResponse::create expects first argument to implement HtmlElementInterface");
-        }
-
         return new static($htmlElement, $status, $headers);
     }
 
     /**
      * Sets the HtmlElement to be rendered.
+     *
      * @param HtmlElementInterface $htmlElement
      */
     public function setHtmlElement(HtmlElementInterface $htmlElement)
@@ -53,6 +52,7 @@ class HtmlResponse extends Response
 
     /**
      * Returns the HtmlElement to be rendered.
+     *
      * @return \Mouf\Html\HtmlElement\HtmlElementInterface
      */
     public function getHtmlElement()
@@ -61,16 +61,18 @@ class HtmlResponse extends Response
     }
 
     /**
-     * Sends content for the current web response.
+     * Gets the body of the message.
      *
-     * @return Response
+     * @return StreamInterface Returns the body as a stream.
      */
-    public function sendContent()
+    public function getBody()
     {
-        if ($this->htmlElement) {
-            echo $this->htmlElement->toHtml();
-        }
+        ob_start();
+        $this->htmlElement->toHtml();
+        $content = ob_get_clean();
+        $stream = new Stream('php://memory', 'wb+');
+        $stream->write($content);
 
-        return $this;
+        return $stream;
     }
 }
