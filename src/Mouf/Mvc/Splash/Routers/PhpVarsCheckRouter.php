@@ -1,6 +1,7 @@
 <?php
 namespace Mouf\Mvc\Splash\Routers;
 
+use Mouf\Mvc\Splash\Utils\SplashException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
