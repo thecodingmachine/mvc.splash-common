@@ -11,24 +11,24 @@ use Mouf\Utils\Common\ConditionInterface\ConditionInterface;
 class CacheRouter implements HttpKernelInterface
 {
     /**
-	 * The router that will handle the request if cache miss
-	 * @var HttpKernelInterface
-	 */
+     * The router that will handle the request if cache miss
+     * @var HttpKernelInterface
+     */
     private $fallBackRouter;
 
     /**
-	 * @CacheInterface
-	 */
+     * @CacheInterface
+     */
     private $cache;
 
     /**
-	 * @var ConditionInterface
-	 */
+     * @var ConditionInterface
+     */
     private $cacheCondition;
 
     /**
-	 * @var LoggerInterface
-	 */
+     * @var LoggerInterface
+     */
     private $log;
 
     public function __construct(HttpKernelInterface $fallBackRouter, CacheInterface $cache, LoggerInterface $log, ConditionInterface $cacheCondition)
@@ -40,20 +40,20 @@ class CacheRouter implements HttpKernelInterface
     }
 
     /**
-	 * Handles a Request to convert it to a Response.
-	 *
-	 * When $catch is true, the implementation must catch all exceptions
-	 * and do its best to convert them to a Response instance.
-	 *
-	 * @param Request $request A Request instance
-	 * @param int     $type    The type of the request
-	 *                          (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-	 * @param bool    $catch Whether to catch exceptions or not
-	 *
-	 * @return Response A Response instance
-	 *
-	 * @throws \Exception When an Exception occurs during processing
-	 */
+     * Handles a Request to convert it to a Response.
+     *
+     * When $catch is true, the implementation must catch all exceptions
+     * and do its best to convert them to a Response instance.
+     *
+     * @param Request $request A Request instance
+     * @param int     $type    The type of the request
+     *                          (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
+     * @param bool    $catch Whether to catch exceptions or not
+     *
+     * @return Response A Response instance
+     *
+     * @throws \Exception When an Exception occurs during processing
+     */
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
     {
         $requestMethod = $request->getMethod();
@@ -93,23 +93,22 @@ class CacheRouter implements HttpKernelInterface
                         $ttl = date_diff($expires, new \DateTime())->s;
                     }
 
-                    if ($ttl) {
+                    if ($ttl > 0) {
                         $this->log->debug("TTL is  : $ttl");
+                        // Make sure the response is serializable
+                        $serializableResponse = new Response();
+                        $serializableResponse->headers = $response->headers;
+
+                        ob_start();
+                        $response->sendContent();
+                        $content = ob_get_clean();
+
+                        $serializableResponse->setContent($content);
+
+                        $this->cache->set($key, $serializableResponse, $ttl);
+                        $this->log->debug("Cache STORED on key $key");
+                        $response = $serializableResponse;
                     }
-
-                    // Make sure the response is serializable
-                    $serializableResponse = new Response();
-                    $serializableResponse->headers = $response->headers;
-
-                    ob_start();
-                    $response->sendContent();
-                    $content = ob_get_clean();
-
-                    $serializableResponse->setContent($content);
-
-                    $this->cache->set($key, $serializableResponse, $ttl);
-                    $this->log->debug("Cache STORED on key $key");
-                    $response = $serializableResponse;
                 }
 
                 return $response;
