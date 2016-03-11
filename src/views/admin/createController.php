@@ -3,8 +3,7 @@
 
 <script type="text/javascript">
 globalData = <?php echo json_encode(array(
-    'namespace' => $this->controllerNamespace,
-    'tdbmExists' => file_exists(ROOT_PATH.'../database.tdbm'),
+    'namespace' => $this->controllerNamespace
 )); ?>
 </script>
 
@@ -51,9 +50,6 @@ Unless you are developing your own autoload system, you should configure <code>c
 	    </label>
 	    <label class="checkbox inline">
 	    	<input type="checkbox" ng-model="injectTemplate" /> Template and content block
-	    </label>
-	    <label class="checkbox inline" ng-show="tdbmExists">
-	    	<input type="checkbox" ng-model="injectDaoFactory" /> DAO Factory
 	    </label>
 	</div>
 </div>
