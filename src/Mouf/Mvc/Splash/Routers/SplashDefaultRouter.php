@@ -238,6 +238,8 @@ class SplashDefaultRouter implements MiddlewareInterface
         }
 
         $tailing_url = substr($request_path, $pos + strlen($this->rootUrl));
+        
+        $tailing_url = urldecode($tailing_url);
 
         $splashRoute = $urlNodes->walk($tailing_url, $request);
 
