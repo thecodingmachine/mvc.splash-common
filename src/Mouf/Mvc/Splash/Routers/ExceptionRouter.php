@@ -47,24 +47,24 @@ class ExceptionRouter implements ErrorMiddlewareInterface
     /**
      * Actually handle the exception depending.
      *
-     * @param \Exception $e
+     * @param \Throwable $throwable
      *
      * @return ResponseInterface
      */
-    private function handleException(\Exception $e, Request $request)
+    private function handleException($throwable, Request $request)
     {
         if ($this->log != null) {
             $this->log->error('Exception thrown inside a controller.', array(
-                    'exception' => $e,
+                    'exception' => $throwable,
             ));
         } else {
             // If no logger is set, let's log in PHP error_log
-            error_log($e->getMessage().' - '.$e->getTraceAsString());
+            error_log($throwable->getMessage().' - '.$throwable->getTraceAsString());
         }
 
         $response = SplashUtils::buildControllerResponse(
-            function () use ($e, $request) {
-                return $this->errorController->serverError($e, $request);
+            function () use ($throwable, $request) {
+                return $this->errorController->serverError($throwable, $request);
             }
         );
 
