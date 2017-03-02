@@ -51,9 +51,9 @@ class ExceptionUtils
      * Function called to display an exception if it occurs.
      * It will make sure to purge anything in the buffer before calling the exception displayer.
      *
-     * @param Exception $exception
+     * @param \Throwable $throwable
      */
-    public static function getHtmlForException(\Exception $exception)
+    public static function getHtmlForException($throwable)
     {
         //global $sys_error_reporting_mail;
         //global $sys_error_messages;
@@ -63,9 +63,9 @@ class ExceptionUtils
 
         $display_errors = ini_get('display_errors');
         $color = '#FF0000';
-        $type = 'Uncaught '.get_class($exception);
-        if ($exception->getCode() != null) {
-            $type .= ' with error code '.$exception->getCode();
+        $type = 'Uncaught '.get_class($throwable);
+        if ($throwable->getCode() != null) {
+            $type .= ' with error code '.$throwable->getCode();
         }
 
         $msg .= "<tr><td colspan='3' style='background-color:$color; color:white; text-align:center'><b>$type</b></td></tr>";
@@ -74,10 +74,10 @@ class ExceptionUtils
         $msg .= "<td style='background-color:#AAAAAA; color:white; text-align:center'>File</td>";
         $msg .= "<td style='background-color:#AAAAAA; color:white; text-align:center'>Line</td></tr>";
 
-        $msg .= "<tr><td style='background-color:#EEEEEE; color:black'><b>".nl2br($exception->getMessage()).'</b></td>';
-        $msg .= "<td style='background-color:#EEEEEE; color:black'>".self::displayFile($exception->getFile()).'</td>';
-        $msg .= "<td style='background-color:#EEEEEE; color:black'>".$exception->getLine().'</td></tr>';
-        $msg .= self::getHTMLBackTrace($exception->getTrace());
+        $msg .= "<tr><td style='background-color:#EEEEEE; color:black'><b>".nl2br($throwable->getMessage()).'</b></td>';
+        $msg .= "<td style='background-color:#EEEEEE; color:black'>".self::displayFile($throwable->getFile()).'</td>';
+        $msg .= "<td style='background-color:#EEEEEE; color:black'>".$throwable->getLine().'</td></tr>';
+        $msg .= self::getHTMLBackTrace($throwable->getTrace());
         $msg .= '</table>';
 
         return $msg;
