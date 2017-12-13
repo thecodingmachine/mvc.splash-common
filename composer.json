@@ -31,7 +31,7 @@
 		"mouf/utils.common.url-interface" : "~1.0",
 		"mouf/html.renderer.twig-extensions": "~1.0",
         "mouf/mvc.splash-implementation": "~5.0",
-		"symfony/http-kernel" : "~2.0",
+		"symfony/http-kernel" : "^2 || ^3 || ^4",
 		"mouf/utils.common.conditioninterface": "~2.0",
 		"mouf/utils.cache.cache-interface": "~2.0"
 	},
