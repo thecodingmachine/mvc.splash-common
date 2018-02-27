@@ -74,10 +74,6 @@ class SplashCreateControllerService
                 if (!$result) {
                     $errors['actions'][$key]['twigTemplateFileError'] = 'Unable to create directory "'.$viewDirName.'"';
                 }
-
-                if (file_exists(ROOT_PATH.'../../../'.$twigFile)) {
-                    $errors['actions'][$key]['twigTemplateFileError'] = 'This file already exists.';
-                }
             }
             if ($injectTemplate && $action['view'] == 'php') {
                 $importHtmlResponse = true;
@@ -88,10 +84,6 @@ class SplashCreateControllerService
                 $result = $this->createDirectory($viewDirName);
                 if (!$result) {
                     $errors['actions'][$key]['phpTemplateFileError'] = 'Unable to create directory "'.$viewDirName.'"';
-                }
-
-                if (file_exists(ROOT_PATH.'../../../'.$phpFile)) {
-                    $errors['actions'][$key]['phpTemplateFileError'] = 'This file already exists.';
                 }
             }
             if ($action['view'] == 'redirect') {
@@ -306,16 +298,11 @@ $parameters = array();
     }
 
 <?php foreach ($actions as $action):
-    // First step, let's detect the {parameters} in the URL and add them if necessary
-    // TODO
-    // TODO
-    // TODO
-    // TODO
+
 
 ?>
     /**
      * @URL("<?= addslashes($action['url']) ?>")
-
 <?php if ($action['anyMethod'] == 'false') {
     if ($action['getMethod'] == 'true') {
         echo "     * @Get\n";
@@ -330,6 +317,7 @@ $parameters = array();
         echo "     * @Delete\n";
     }
 }
+                    // let's detect the {parameters} in the URL and add them if necessary
                 if (isset($action['parameters'])) {
                     $parameters = $action['parameters'];
                     foreach ($parameters as $parameter) {
@@ -395,19 +383,20 @@ $parametersCode = array();
                 // Now, let's create the views files
                 foreach ($actions as $action) {
                     if ($injectTemplate && $action['view'] == 'twig') {
-                        $twigTemplateFile = $this->generateTwigView();
-
                         $twigFile = ltrim($action['twigFile'], '/\\');
+                        if(!file_exists(ROOT_PATH.'../../../'.$twigFile)) {
+                            $twigTemplateFile = $this->generateTwigView();
+                            file_put_contents(ROOT_PATH.'../../../'.$twigFile, $twigTemplateFile);
+                            chmod(ROOT_PATH.'../../../'.$twigFile, 0664);
+                        }
 
-                        file_put_contents(ROOT_PATH.'../../../'.$twigFile, $twigTemplateFile);
-                        chmod(ROOT_PATH.'../../../'.$twigFile, 0664);
                     } elseif ($injectTemplate && $action['view'] == 'php') {
-                        $phpTemplateFile = $this->generatePhpView($namespace.'\\'.$controllerName);
-
                         $phpFile = ltrim($action['phpFile'], '/\\');
-
-                        file_put_contents(ROOT_PATH.'../../../'.$phpFile, $phpTemplateFile);
-                        chmod(ROOT_PATH.'../../../'.$phpFile, 0664);
+                        if(!file_exists(ROOT_PATH.'../../../'.$phpFile)) {
+                            $phpTemplateFile = $this->generatePhpView($namespace.'\\'.$controllerName);
+                            file_put_contents(ROOT_PATH.'../../../'.$phpFile, $phpTemplateFile);
+                            chmod(ROOT_PATH.'../../../'.$phpFile, 0664);
+                        }
                     }
                 }
 
@@ -449,7 +438,7 @@ $parametersCode = array();
         }
 
         if ($errors) {
-            $exception = new SplashCreateControllerServiceException('Errors detected');
+            $exception = new SplashCreateControllerServiceException('Errors detected : '.var_export($errors, true));
             $exception->setErrors($errors);
             throw $exception;
         }
