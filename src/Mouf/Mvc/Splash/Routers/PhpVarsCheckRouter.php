@@ -2,11 +2,12 @@
 
 namespace Mouf\Mvc\Splash\Routers;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Mouf\Mvc\Splash\Utils\SplashException;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -19,12 +20,6 @@ use Psr\Log\LoggerInterface;
  */
 class PhpVarsCheckRouter implements MiddlewareInterface
 {
-    /**
-     * The logger used by Splash.
-     *
-     * @var LoggerInterface
-     */
-    private $log;
 
     /**
      * A simple counter to check requests' length (GET, POST, REQUEST).
@@ -32,16 +27,6 @@ class PhpVarsCheckRouter implements MiddlewareInterface
      * @var int
      */
     private $count;
-
-    /**
-     * @Important
-     *
-     * @param LoggerInterface $log The logger used by Splash
-     */
-    public function __construct(LoggerInterface $log = null)
-    {
-        $this->log = $log;
-    }
 
     /**
      * Get the min in 2 values if there exist.
@@ -113,12 +98,12 @@ class PhpVarsCheckRouter implements MiddlewareInterface
      * to the next middleware component to create the response.
      *
      * @param Request $request
-     * @param DelegateInterface $delegate
      *
-     * @return Response
-     * @throws \Mouf\Mvc\Splash\Utils\SplashException
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     * @throws SplashException
      */
-    public function process(Request $request, DelegateInterface $delegate)
+    public function process(Request $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Check if there is a limit of input number in php
         // Throw exception if the limit is reached
@@ -128,9 +113,6 @@ class PhpVarsCheckRouter implements MiddlewareInterface
                 $this->count = 0;
                 array_walk_recursive($_GET, array($this, 'countRecursive'));
                 if ($this->count === $maxGet) {
-                    if ($this->log !== null) {
-                        $this->log->error('Max input vars reaches for get parameters ({maxGet}). Check your variable max_input_vars in php.ini or suhosin module suhosin.get.max_vars.', ['maxGet' => $maxGet]);
-                    }
                     throw new SplashException('Max input vars reaches for get parameters ('.$maxGet.'). Check your variable max_input_vars in php.ini or suhosin module suhosin.get.max_vars.');
                 }
             }
@@ -141,9 +123,6 @@ class PhpVarsCheckRouter implements MiddlewareInterface
                 $this->count = 0;
                 array_walk_recursive($_POST, array($this, 'countRecursive'));
                 if ($this->count === $maxPost) {
-                    if ($this->log !== null) {
-                        $this->log->error('Max input vars reaches for post parameters ({maxPost}). Check your variable max_input_vars in php.ini or suhosin module suhosin.post.max_vars.', ['maxPost' => $maxPost]);
-                    }
                     throw new SplashException('Max input vars reaches for post parameters ('.$maxPost.'). Check your variable max_input_vars in php.ini or suhosin module suhosin.post.max_vars.');
                 }
             }
@@ -154,9 +133,6 @@ class PhpVarsCheckRouter implements MiddlewareInterface
                 $this->count = 0;
                 array_walk_recursive($_REQUEST, array($this, 'countRecursive'));
                 if ($this->count === $maxRequest) {
-                    if ($this->log !== null) {
-                        $this->log->error('Max input vars reaches for request parameters ({maxRequest}). Check your variable max_input_vars in php.ini or suhosin module suhosin.request.max_vars.', ['maxRequest' => $maxRequest]);
-                    }
                     throw new SplashException('Max input vars reaches for request parameters ('.$maxRequest.'). Check your variable max_input_vars in php.ini or suhosin module suhosin.request.max_vars.');
                 }
             }
@@ -164,9 +140,6 @@ class PhpVarsCheckRouter implements MiddlewareInterface
         if (isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) == 'post' && empty($_POST) && empty($_FILES)) {
             $maxPostSize = self::iniGetBytes('post_max_size');
             if ($_SERVER['CONTENT_LENGTH'] > $maxPostSize) {
-                if ($this->log !== null) {
-                    $this->log->error('Max post size exceeded! Got {length} bytes, but limit is {maxPostSize} bytes. Edit post_max_size setting in your php.ini.', ['length' => $_SERVER['CONTENT_LENGTH'], 'maxPostSize' => $maxPostSize]);
-                }
                 throw new SplashException(
                     sprintf('Max post size exceeded! Got %s bytes, but limit is %s bytes. Edit post_max_size setting in your php.ini.',
                         $_SERVER['CONTENT_LENGTH'],
@@ -177,6 +150,6 @@ class PhpVarsCheckRouter implements MiddlewareInterface
         }
 
         //If no Exception has been thrown, call next router
-        return $delegate->process($request);
+        return $handler->handle($request);
     }
 }
