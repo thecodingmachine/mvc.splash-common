@@ -127,7 +127,7 @@ class PhpVarsCheckRouter implements MiddlewareInterface
             if ($maxGet !== null) {
                 $this->count = 0;
                 array_walk_recursive($_GET, array($this, 'countRecursive'));
-                if ($this->count === $maxGet) {
+                if ($this->count >= $maxGet) {
                     if ($this->log !== null) {
                         $this->log->error('Max input vars reaches for get parameters ({maxGet}). Check your variable max_input_vars in php.ini or suhosin module suhosin.get.max_vars.', ['maxGet' => $maxGet]);
                     }
@@ -140,7 +140,7 @@ class PhpVarsCheckRouter implements MiddlewareInterface
             if ($maxPost !== null) {
                 $this->count = 0;
                 array_walk_recursive($_POST, array($this, 'countRecursive'));
-                if ($this->count === $maxPost) {
+                if ($this->count >= $maxPost) {
                     if ($this->log !== null) {
                         $this->log->error('Max input vars reaches for post parameters ({maxPost}). Check your variable max_input_vars in php.ini or suhosin module suhosin.post.max_vars.', ['maxPost' => $maxPost]);
                     }
