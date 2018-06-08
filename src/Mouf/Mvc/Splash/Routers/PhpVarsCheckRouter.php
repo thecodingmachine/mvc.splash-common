@@ -153,7 +153,7 @@ class PhpVarsCheckRouter implements MiddlewareInterface
             if ($maxRequest !== null) {
                 $this->count = 0;
                 array_walk_recursive($_REQUEST, array($this, 'countRecursive'));
-                if ($this->count === $maxRequest) {
+                if ($this->count >= $maxRequest) {
                     if ($this->log !== null) {
                         $this->log->error('Max input vars reaches for request parameters ({maxRequest}). Check your variable max_input_vars in php.ini or suhosin module suhosin.request.max_vars.', ['maxRequest' => $maxRequest]);
                     }
