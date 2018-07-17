@@ -6,10 +6,13 @@ use Mouf\Html\HtmlElement\Scopable;
 use Mouf\Html\HtmlElement\HtmlBlock;
 use Mouf\Html\Template\TemplateInterface;
 use Mouf\Html\HtmlElement\HtmlElementInterface;
-use Mouf\Mvc\Splash\Exception\BadRequestException;
+use TheCodingMachine\Splash\Exception\BadRequestException;
 use Mouf\Mvc\Splash\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TheCodingMachine\Splash\Controllers\Http400HandlerInterface;
+use TheCodingMachine\Splash\Controllers\Http404HandlerInterface;
+use TheCodingMachine\Splash\Controllers\Http500HandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
