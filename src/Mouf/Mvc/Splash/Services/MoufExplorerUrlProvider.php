@@ -3,6 +3,8 @@
 namespace Mouf\Mvc\Splash\Services;
 
 use Mouf\MoufManager;
+use TheCodingMachine\Splash\Services\UrlProviderInterface;
+use TheCodingMachine\Splash\Services\SplashRoute;
 
 /**
  * This class scans the Mouf container in order to find all UrlProviderInterface instances.

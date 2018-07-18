@@ -2,14 +2,14 @@
 
 namespace Mouf\Mvc\Splash\Routers;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
-use Mouf\Mvc\Splash\Controllers\Http500HandlerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
-use Mouf\Mvc\Splash\Services\SplashUtils;
+use TheCodingMachine\Splash\Services\SplashUtils;
+use TheCodingMachine\Splash\Controllers\Http500HandlerInterface;
 
 /**
  * This router transforms exceptions into HTTP 500 pages, based on the configured error controller.
@@ -77,14 +77,14 @@ class ExceptionRouter implements MiddlewareInterface
      * to the next middleware component to create the response.
      *
      * @param Request $request
-     * @param DelegateInterface $delegate
+     * @param RequestHandlerInterface $delegate
      *
      * @return Response
      */
-    public function process(Request $request, DelegateInterface $delegate)
+    public function process(Request $request, RequestHandlerInterface $delegate): ResponseInterface
     {
         try {
-            return $delegate->process($request);
+            return $delegate->handle($request);
         } catch (\Throwable $t) {
             return $this->handleException($t, $request);
         }

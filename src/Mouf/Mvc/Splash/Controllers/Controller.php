@@ -12,7 +12,7 @@ abstract class Controller implements Scopable
     /**
      * Inludes the file (useful to load a view inside the Controllers scope).
      *
-     * @param unknown_type $file
+     * @param string $file
      */
     public function loadFile($file)
     {

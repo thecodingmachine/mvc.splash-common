@@ -5,7 +5,7 @@ use Mouf\Composer\ClassNameMapper;
 use Mouf\Mvc\Splash\Controllers\Controller;
 use Mouf\Html\Template\TemplateInterface;
 use Mouf\Html\HtmlElement\HtmlBlock;
-use Mouf\Mvc\Splash\Utils\SplashException;
+use TheCodingMachine\Splash\Utils\SplashException;
 use Psr\Log\LoggerInterface;
 use Mouf\MoufManager;
 use Mouf\MoufCache;
