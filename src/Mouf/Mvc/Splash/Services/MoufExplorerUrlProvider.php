@@ -22,7 +22,7 @@ class MoufExplorerUrlProvider implements UrlProviderInterface
     public function getUrlsList($instanceName)
     {
         $moufManager = MoufManager::getMoufManager();
-        $instanceNames = $moufManager->findInstances('Mouf\\Mvc\\Splash\\Services\\UrlProviderInterface');
+        $instanceNames = $moufManager->findInstances(UrlProviderInterface::class);
 
         $urls = array();
 
