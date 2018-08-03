@@ -134,9 +134,9 @@ use Mouf\Html\HtmlElement\HtmlBlock;
     ?>
 use Psr\Log\LoggerInterface;
 <?php
-
 }
-                ?>
+?>
+use Psr\Http\Message\ResponseInterface;
 <?php if ($injectDaoFactory) {
     ?>
 use <?= $moufManager->getVariable('tdbmDefaultDaoNamespace').'\\Generated\\'.$moufManager->getVariable('tdbmDefaultDaoFactoryName') ?>;
@@ -345,7 +345,7 @@ $parametersCode = array();
                     $parametersCode[] = $parameterCode;
                 }
                 echo implode(', ', $parametersCode);
-                ?>) {
+                ?>): ResponseInterface {
         // TODO: write content of action here
 
 <?php if ($injectTemplate && $action['view'] == 'twig'): ?>
