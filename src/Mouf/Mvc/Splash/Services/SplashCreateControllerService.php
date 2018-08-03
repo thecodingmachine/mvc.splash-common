@@ -5,7 +5,7 @@ use Mouf\Composer\ClassNameMapper;
 use Mouf\Mvc\Splash\Controllers\Controller;
 use Mouf\Html\Template\TemplateInterface;
 use Mouf\Html\HtmlElement\HtmlBlock;
-use Mouf\Mvc\Splash\Utils\SplashException;
+use TheCodingMachine\Splash\Utils\SplashException;
 use Psr\Log\LoggerInterface;
 use Mouf\MoufManager;
 use Mouf\MoufCache;
@@ -117,11 +117,11 @@ class SplashCreateControllerService
                 ?>
 namespace <?= $namespace ?>;
 
-use Mouf\Mvc\Splash\Annotations\Get;
-use Mouf\Mvc\Splash\Annotations\Post;
-use Mouf\Mvc\Splash\Annotations\Put;
-use Mouf\Mvc\Splash\Annotations\Delete;
-use Mouf\Mvc\Splash\Annotations\URL;
+use TheCodingMachine\Splash\Annotations\Get;
+use TheCodingMachine\Splash\Annotations\Post;
+use TheCodingMachine\Splash\Annotations\Put;
+use TheCodingMachine\Splash\Annotations\Delete;
+use TheCodingMachine\Splash\Annotations\URL;
 <?php if ($injectTemplate) {
     ?>
 use Mouf\Html\Template\TemplateInterface;
@@ -134,9 +134,9 @@ use Mouf\Html\HtmlElement\HtmlBlock;
     ?>
 use Psr\Log\LoggerInterface;
 <?php
-
 }
-                ?>
+?>
+use Psr\Http\Message\ResponseInterface;
 <?php if ($injectDaoFactory) {
     ?>
 use <?= $moufManager->getVariable('tdbmDefaultDaoNamespace').'\\Generated\\'.$moufManager->getVariable('tdbmDefaultDaoFactoryName') ?>;
@@ -345,7 +345,7 @@ $parametersCode = array();
                     $parametersCode[] = $parameterCode;
                 }
                 echo implode(', ', $parametersCode);
-                ?>) {
+                ?>): ResponseInterface {
         // TODO: write content of action here
 
 <?php if ($injectTemplate && $action['view'] == 'twig'): ?>

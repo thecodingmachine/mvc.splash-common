@@ -2,7 +2,7 @@
 
 namespace Mouf\Mvc\Splash\Services;
 
-use Mouf\Mvc\Splash\Utils\SplashException;
+use TheCodingMachine\Splash\Utils\SplashException;
 
 class SplashCreateControllerServiceException extends SplashException
 {

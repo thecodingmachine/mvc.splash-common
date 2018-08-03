@@ -3,8 +3,8 @@
 namespace Mouf\Mvc\Splash;
 
 use Mouf\Utils\Action\ActionInterface;
-use Mouf\Mvc\Splash\Services\SplashRoute;
-use Mouf\Mvc\Splash\Services\UrlProviderInterface;
+use TheCodingMachine\Splash\Services\SplashRoute;
+use TheCodingMachine\Splash\Services\UrlProviderInterface;
 use Mouf\Utils\Common\UrlInterface;
 
 /**
@@ -66,8 +66,6 @@ class UrlEntryPoint implements UrlProviderInterface, UrlInterface
      * If the tag changes, the cache is flushed by Splash.
      *
      * Important! This must be quick to compute.
-     *
-     * @return mixed
      */
     public function getExpirationTag() : string
     {

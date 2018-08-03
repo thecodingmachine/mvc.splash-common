@@ -3,6 +3,8 @@
 namespace Mouf\Mvc\Splash\Services;
 
 use Mouf\MoufManager;
+use TheCodingMachine\Splash\Services\UrlProviderInterface;
+use TheCodingMachine\Splash\Services\SplashRoute;
 
 /**
  * This class scans the Mouf container in order to find all UrlProviderInterface instances.
@@ -20,7 +22,7 @@ class MoufExplorerUrlProvider implements UrlProviderInterface
     public function getUrlsList($instanceName)
     {
         $moufManager = MoufManager::getMoufManager();
-        $instanceNames = $moufManager->findInstances('Mouf\\Mvc\\Splash\\Services\\UrlProviderInterface');
+        $instanceNames = $moufManager->findInstances(UrlProviderInterface::class);
 
         $urls = array();
 

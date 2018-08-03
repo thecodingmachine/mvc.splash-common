@@ -7,9 +7,9 @@ class ExceptionUtils
     /**
      * Returns the Exception Backtrace as a nice HTML view.
      *
-     * @param unknown_type $backtrace
+     * @param array $backtrace
      *
-     * @return unknown
+     * @return string
      */
     private static function getHTMLBackTrace($backtrace)
     {
@@ -51,9 +51,9 @@ class ExceptionUtils
      * Function called to display an exception if it occurs.
      * It will make sure to purge anything in the buffer before calling the exception displayer.
      *
-     * @param Exception $exception
+     * @param \Throwable $exception
      */
-    public static function getHtmlForException(\Exception $exception)
+    public static function getHtmlForException(\Throwable $exception)
     {
         //global $sys_error_reporting_mail;
         //global $sys_error_messages;
@@ -87,9 +87,9 @@ class ExceptionUtils
      * Function called to display an exception if it occurs.
      * It will make sure to purge anything in the buffer before calling the exception displayer.
      *
-     * @param Exception $exception
+     * @param \Throwable $exception
      */
-    public static function getTextForException(\Exception $exception)
+    public static function getTextForException(\Throwable $exception)
     {
         // Now, let's compute the same message, but without the HTML markup for the error log.
         $textTrace = 'Message: '.$exception->getMessage()."\n";
@@ -103,9 +103,9 @@ class ExceptionUtils
     /**
      * Returns the Exception Backtrace as a text string.
      *
-     * @param unknown_type $backtrace
+     * @param array $backtrace
      *
-     * @return unknown
+     * @return string
      */
     private static function getTextBackTrace($backtrace)
     {
@@ -145,9 +145,9 @@ class ExceptionUtils
     /**
      * Used by the debug function to display a nice view of the parameters.
      *
-     * @param unknown_type $var
+     * @param mixed $var
      *
-     * @return unknown
+     * @return string
      */
     private static function getPhpVariableAsText($var)
     {

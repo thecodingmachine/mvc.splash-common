@@ -1,3 +1,9 @@
+10.0
+====
+
+- Most code has been moved to thecodingmachine/splash-router
+- Only classes specific to Mouf or embedding some display logic stay in this package
+
 7.0
 ===
 
