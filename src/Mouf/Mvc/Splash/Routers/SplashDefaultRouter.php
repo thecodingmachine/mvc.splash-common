@@ -198,7 +198,7 @@ class SplashDefaultRouter implements MiddlewareInterface
             if ($this->http404Handler !== null) {
                 return $this->http404Handler->pageNotFound($request);
             } else {
-                throw $e;
+                return $out($request);
             }
         } catch (\Throwable $t) {
             if ($this->http500Handler !== null) {
