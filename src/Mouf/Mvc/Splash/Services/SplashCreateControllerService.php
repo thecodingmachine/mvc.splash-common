@@ -23,11 +23,10 @@ class SplashCreateControllerService
      * @param string $namespace
      * @param string $injectLogger
      * @param string $injectTemplate
-     * @param string $injectDaoFactory
      * @param array  $actions
      */
     public function generate(MoufManager $moufManager, $controllerName, $instanceName, $namespace, $injectLogger = false,
-            $injectTemplate = false, $injectDaoFactory = false, $actions = array())
+                             $injectTemplate = false, $actions = array())
     {
         $namespace = rtrim($namespace, '\\').'\\';
 
@@ -47,10 +46,6 @@ class SplashCreateControllerService
         }
 
         $namespace = trim($namespace, '\\');
-
-        if (!file_exists(ROOT_PATH.'../database.tdbm') && $injectDaoFactory) {
-            $injectDaoFactory = false;
-        }
 
         // Check that instance does not already exists
         if ($moufManager->has($instanceName)) {
@@ -137,13 +132,6 @@ use Psr\Log\LoggerInterface;
 }
 ?>
 use Psr\Http\Message\ResponseInterface;
-<?php if ($injectDaoFactory) {
-    ?>
-use <?= $moufManager->getVariable('tdbmDefaultDaoNamespace').'\\Generated\\'.$moufManager->getVariable('tdbmDefaultDaoFactoryName') ?>;
-<?php
-
-}
-                ?>
 <?php if ($injectTwig) {
     ?>
 use \Twig_Environment;
@@ -209,18 +197,6 @@ class <?= $controllerName ?> {
 
 }
                 ?>
-<?php if ($injectDaoFactory) {
-    ?>
-    /**
-     * The DAO factory object.
-     * @var DaoFactory
-     */
-    private $daoFactory;
-
-<?php
-
-}
-                ?>
 <?php if ($injectTwig) {
     ?>
     /**
@@ -244,9 +220,6 @@ if ($injectLogger) {
                     echo "     * @param TemplateInterface \$template The template used by this controller\n";
                     echo "     * @param HtmlBlock \$content The main content block of the page\n";
                 }
-                if ($injectDaoFactory) {
-                    echo "     * @param DaoFactory \$daoFactory The object in charge of retrieving DAOs\n";
-                }
                 if ($injectTwig) {
                     echo "     * @param Twig_Environment \$twig The Twig environment (used to render Twig templates)\n";
                 }
@@ -260,9 +233,6 @@ $parameters = array();
                 if ($injectTemplate) {
                     $parameters[] = 'TemplateInterface $template';
                     $parameters[] = 'HtmlBlock $content';
-                }
-                if ($injectDaoFactory) {
-                    $parameters[] = 'DaoFactory $daoFactory';
                 }
                 if ($injectTwig) {
                     $parameters[] = 'Twig_Environment $twig';
@@ -279,12 +249,6 @@ $parameters = array();
                     ?>
         $this->template = $template;
         $this->content = $content;
-<?php
-
-                }
-                if ($injectDaoFactory) {
-                    ?>
-        $this->daoFactory = $daoFactory;
 <?php
 
                 }
@@ -414,11 +378,6 @@ $parametersCode = array();
                     }
                     if ($moufManager->has('block.content')) {
                         $controllerInstance->getProperty('content')->setValue($moufManager->getInstanceDescriptor('block.content'));
-                    }
-                }
-                if ($injectDaoFactory) {
-                    if ($moufManager->has('daoFactory')) {
-                        $controllerInstance->getProperty('daoFactory')->setValue($moufManager->getInstanceDescriptor('daoFactory'));
                     }
                 }
                 if ($injectTwig) {
