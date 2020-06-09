@@ -63,7 +63,7 @@ class PhpVarsCheckRouter implements MiddlewareInterface
         $val = trim(ini_get($val));
         if ($val != '') {
             $last = strtolower(
-                $val{strlen($val) - 1}
+                $val[strlen($val) - 1]
             );
         } else {
             $last = '';
