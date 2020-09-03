@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TheCodingMachine\Splash\Controllers\Http400HandlerInterface;
 use TheCodingMachine\Splash\Controllers\Http404HandlerInterface;
 use TheCodingMachine\Splash\Controllers\Http500HandlerInterface;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 
 /**
  * This class provides the default Splash behaviour when a HTTP 404 and HTTP 500 error is triggered.

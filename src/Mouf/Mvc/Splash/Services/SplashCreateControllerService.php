@@ -154,14 +154,14 @@ use Mouf\Html\Renderer\Twig\TwigTemplate;
                 ?>
 <?php if ($importJsonResponse) {
     ?>
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 <?php
 
 }
                 ?>
 <?php if ($importRedirectResponse) {
     ?>
-use Zend\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
 <?php
 
 }

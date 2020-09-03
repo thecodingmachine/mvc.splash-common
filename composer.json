@@ -1,65 +1,66 @@
 {
-	"name" : "mouf/mvc.splash-common",
-	"description" : "Splash is a PHP router. It takes an HTTP request and dispatches it to the appropriate controller.",
-	"type" : "mouf-library",
-	"authors" : [{
-			"name" : "David Négrier",
-			"email" : "d.negrier@thecodingmachine.com",
-			"homepage" : "http://mouf-php.com"
-		}
-	],
-	"keywords" : [
-		"mvc",
-		"framework",
-		"mouf",
-		"splash",
-		"splash-common"
-	],
-	"homepage" : "http://mouf-php.com/packages/mouf/mvc.splash-common",
-	"license" : [
-		"MIT"
-	],
-	"require" : {
-		"php" : ">=7.0",
-		"thecodingmachine/splash-router": "^10",
-		"mouf/mouf": "^2.0",
-		"mouf/html.htmlelement" : "^2.0",
-		"mouf/utils.action.common-action" : "~1.0",
-		"mouf/html.renderer.twig-extensions": "^1 || ^3",
-		"mouf/utils.common.conditioninterface": "~2.0",
-		"mouf/html.template.templateinterface": "^2.1 || ^3"
-	},
-	"require-dev": {
-		"phpunit/phpunit": "^5.0",
-		"satooshi/php-coveralls": "^1.0",
-		"mouf/picotainer": "~1.0",
-		"mnapoli/simplex": "^0.3",
-		"cache/array-adapter": "^0.4.0",
-		"phpstan/phpstan": "^0.10.1"
-	},
-	"autoload" : {
-		"psr-4" : {
-			"Mouf\\Mvc\\Splash\\" : "src/Mouf/Mvc/Splash"
-		}
-	},
-	"autoload-dev" : {
-		"psr-4" : {
-			"Mouf\\Mvc\\Splash\\" : "tests/Mouf/Mvc/Splash"
-		}
-	},
-	"scripts": {
-		"phpstan": "phpstan analyse src/Mouf -c phpstan.neon --level=0 --no-progress -vvv"
-	},
-	"minimum-stability": "dev",
-	"prefer-stable": true,
-	"extra" : {
-		"mouf" : {
-			"logo" : "doc/images/logo.png",
-			"section": {
-				"name": "MVC",
-				"description": "All the tools you need to route requests and display pages",
-				"weight": 10
-			}
-		}
-	}
+    "name": "mouf/mvc.splash-common",
+    "description": "Splash is a PHP router. It takes an HTTP request and dispatches it to the appropriate controller.",
+    "type": "mouf-library",
+    "authors": [
+        {
+            "name": "David Négrier",
+            "email": "d.negrier@thecodingmachine.com",
+            "homepage": "http://mouf-php.com"
+        }
+    ],
+    "keywords": [
+        "mvc",
+        "framework",
+        "mouf",
+        "splash",
+        "splash-common"
+    ],
+    "homepage": "http://mouf-php.com/packages/mouf/mvc.splash-common",
+    "license": [
+        "MIT"
+    ],
+    "require": {
+        "php": ">=7.0",
+        "thecodingmachine/splash-router": "^10",
+        "mouf/mouf": "^2.0",
+        "mouf/html.htmlelement": "^2.0",
+        "mouf/utils.action.common-action": "~1.0",
+        "mouf/html.renderer.twig-extensions": "^1 || ^3",
+        "mouf/utils.common.conditioninterface": "~2.0",
+        "mouf/html.template.templateinterface": "^2.1 || ^3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.0",
+        "satooshi/php-coveralls": "^1.0",
+        "mouf/picotainer": "~1.0",
+        "mnapoli/simplex": "^0.3",
+        "cache/array-adapter": "^0.4.0",
+        "phpstan/phpstan": "^0.10.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mouf\\Mvc\\Splash\\": "src/Mouf/Mvc/Splash"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mouf\\Mvc\\Splash\\": "tests/Mouf/Mvc/Splash"
+        }
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse src/Mouf -c phpstan.neon --level=0 --no-progress -vvv"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "mouf": {
+            "logo": "doc/images/logo.png",
+            "section": {
+                "name": "MVC",
+                "description": "All the tools you need to route requests and display pages",
+                "weight": 10
+            }
+        }
+    }
 }
