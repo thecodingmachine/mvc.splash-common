@@ -4,8 +4,8 @@ namespace Mouf\Mvc\Splash;
 
 use Mouf\Html\HtmlElement\HtmlElementInterface;
 use Psr\Http\Message\StreamInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Stream;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Stream;
 
 /**
  * This class is a PSR-7 response that takes in parameter a HtmlElementInterface element and will render it.
