@@ -71,7 +71,7 @@ class HtmlResponse extends Response
      *
      * @return StreamInterface Returns the body as a stream.
      */
-    public function getBody()
+    public function getBody(): StreamInterface
     {
         if ($this->stream === null) {
             ob_start();
