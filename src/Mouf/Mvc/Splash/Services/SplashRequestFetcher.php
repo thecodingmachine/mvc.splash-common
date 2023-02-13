@@ -21,7 +21,7 @@ class SplashRequestFetcher implements ParameterFetcher
      */
     public function canHandle(ReflectionParameter $reflectionParameter, string $url = null) : bool
     {
-        $class = $reflectionParameter->getType()?->getName();
+        $class = $reflectionParameter->getType();
         if ($class === null) {
             return false;
         }
