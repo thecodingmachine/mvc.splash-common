@@ -21,17 +21,13 @@ class SplashRequestFetcher implements ParameterFetcher
      */
     public function canHandle(ReflectionParameter $reflectionParameter, string $url = null) : bool
     {
-        $class = $reflectionParameter->getClass();
+        $class = $reflectionParameter->getType()?->getName();
         if ($class === null) {
             return false;
         }
         $name = $class->getName();
         // Check type of requested parameter; Only interfaces are allowed in an action of a controller.
-        if ($name === 'Psr\\Http\\Message\\RequestInterface' || $name === 'Psr\\Http\\Message\\ServerRequestInterface') {
-            return true;
-        } else {
-            return false;
-        }
+        return $name === 'Psr\\Http\\Message\\RequestInterface' || $name === 'Psr\\Http\\Message\\ServerRequestInterface';
     }
 
     /**
