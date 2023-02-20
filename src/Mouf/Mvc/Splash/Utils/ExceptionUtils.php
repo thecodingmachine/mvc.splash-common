@@ -21,7 +21,7 @@ class ExceptionUtils
                 $str .= ((isset($step['class'])) ? htmlspecialchars($step['class'], ENT_NOQUOTES, 'UTF-8') : '').
                 ((isset($step['type'])) ? htmlspecialchars($step['type'], ENT_NOQUOTES, 'UTF-8') : '').htmlspecialchars($step['function'], ENT_NOQUOTES, 'UTF-8').'(';
 
-                if (is_array($step['args'])) {
+                if (array_key_exists('args', $step) && is_array($step['args'])) {
                     $drawn = false;
                     $params = '';
                     foreach ($step['args'] as $param) {
